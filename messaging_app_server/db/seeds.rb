@@ -20,8 +20,10 @@ CSV.foreach(csv_file, headers: true) do |row|
   timestamp = row['Timestamp (UTC)']
   message_body = row['Message Body']
 
-  # Find the User record corresponding to the user_id from the CSV file
-  user = User.find_by(id: user_id)
+  # Find the User record corresponding to the user_id from the CSV file or create if it doesn't exist
+#   user = User.find_by(id: user_id)
+
+    user = User.find_or_create_by!(id: user_id)
 
   if user.nil?
     puts "User with ID #{user_id} not found. Skipping message creation."
