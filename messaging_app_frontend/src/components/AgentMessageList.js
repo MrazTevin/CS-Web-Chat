@@ -22,8 +22,12 @@ function AgentMessageList() {
       <ul>
         {messages.map((message) => (
           <li key={message.id}>
-            <p>{message.content}</p>
-            {/* Add more message details as needed */}
+                        <p>ID: {message.id}</p>
+                        <p>From: {message.user_id}</p>
+            <p>{message.message_body}</p>
+            <p>At: {message.created_at}</p>
+            <hr />
+        
           </li>
         ))}
       </ul>
