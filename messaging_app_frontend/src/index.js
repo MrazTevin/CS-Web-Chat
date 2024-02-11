@@ -4,6 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import axios from 'axios';
+import { ActionCableProvider } from 'react-actioncable-provider';
+
+// ...
+
 
 // Fetch the CSRF token
 // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
@@ -14,7 +18,9 @@ import axios from 'axios';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <ActionCableProvider url={process.env.REACT_APP_API_WS_ROOT}>
     <App />
+    </ActionCableProvider>
   </React.StrictMode>
 );
 
