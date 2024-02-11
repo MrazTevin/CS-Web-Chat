@@ -1,40 +1,42 @@
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-axios.defaults.headers.common['Origin'] = 'http://localhost:3000';
+axios.defaults.headers.common["Origin"] = "http://localhost:3000";
 
-let csrfToken = '';
-axios.get('/csrf-token')
-  .then(response => {
-    csrfToken = response.data.csrfToken;
-  })
-  .catch(error => {
-    console.error('Error fetching CSRF token:', error);
-  });
 
 function MessageForm() {
-  const [userId, setUserId] = useState('');
-  const [messageBody, setMessageBody] = useState('');
+  const [userId, setUserId] = useState("");
+  const [messageBody, setMessageBody] = useState("");
+  const [csrfToken, setCsrfToken] = useState('');
+
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/messages', {
-        user_id: userId,
-        message_body: messageBody
-      }, {
-        headers: {
-          'X-CSRF-Token': csrfToken
+      const response = await axios.post(
+        "/api/messages",
+        {
+          message: {
+          user_id: userId,
+          message_body: messageBody,
+          }, 
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-Token": csrfToken,
+          },
         }
-      });
+      );
 
-      console.log('Message created:', response.data);
+      console.log("Message created:", response.data);
       // Optionally, reset the form fields after successful submission
-      setUserId('');
-      setMessageBody('');
+      setUserId("");
+      setMessageBody("");
     } catch (error) {
-      console.error('Error creating message:', error);
+      console.error("Error creating message:", error);
       alert(`Error creating message: ${error.message}`);
     }
   };
