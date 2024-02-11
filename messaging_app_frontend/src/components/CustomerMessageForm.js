@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Formik, Field, Form } from 'formik';
 import axios from "axios";
 
 axios.defaults.headers.common["Origin"] = "http://localhost:3000";
@@ -11,9 +12,7 @@ function MessageForm() {
 
 
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
       const response = await axios.post(
         "/api/messages",
@@ -32,34 +31,35 @@ function MessageForm() {
       );
 
       console.log("Message created:", response.data);
-      // Optionally, reset the form fields after successful submission
-      setUserId("");
-      setMessageBody("");
+      resetForm();
     } catch (error) {
       console.error("Error creating message:", error);
       alert(`Error creating message: ${error.message}`);
     }
+    setSubmitting(false);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <div>
-        <label>User ID:</label>
-        <input
-          type="text"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
-      </div>
-      <div>
-        <label>Message Body:</label>
-        <textarea
-          value={messageBody}
-          onChange={(e) => setMessageBody(e.target.value)}
-        />
-      </div>
-      <button type="submit">Submit</button>
-    </form>
+    <Formik
+      initialValues={{ userId: '', messageBody: '', csrfToken: '' }}
+      onSubmit={handleSubmit}
+    >
+      {({ isSubmitting }) => (
+        <Form>
+          <div>
+            <label>User ID:</label>
+            <Field type="text" name="userId" />
+          </div>
+          <div>
+            <label>Message Body:</label>
+            <Field as="textarea" name="messageBody" />
+          </div>
+          <button type="submit" disabled={isSubmitting}>
+            Submit
+          </button>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
