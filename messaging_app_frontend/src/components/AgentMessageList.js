@@ -3,7 +3,7 @@ import axios from 'axios';
 import { ActionCable } from 'react-actioncable-provider';
 import '../../src/table.css'
 
-function AgentMessageList() {
+function AgentMessageList({setSelectedMessage}) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -23,6 +23,11 @@ function AgentMessageList() {
     setMessages((prevMessages) => [message, ...prevMessages]);
   };
 
+  const handleSelectMessage = (message) => {
+    setSelectedMessage(message);
+  };
+
+
   return (
     <div>
       <h2>Customer Messages</h2>
@@ -41,7 +46,7 @@ function AgentMessageList() {
         </thead>
         <tbody>
           {messages.map((message) => (
-            <tr key={message.id}>
+            <tr key={message.id} onClick={() => handleSelectMessage(message)}>
               <td>{message.id}</td>
               <td>{message.user_id}</td>
               <td>{message.message_body}</td>
