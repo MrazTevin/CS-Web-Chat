@@ -4,13 +4,15 @@ import axios from 'axios';
 
 function AgentResponseForm({ message_id, agent_id }) {
   const [body, setBody] = useState('');
+  const [agentName, setAgentName] = useState(''); // Add a new state variable for the agent's name
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-        const response = await axios.post('/api/responses', { body, message_id, agent_id });
+        const response = await axios.post('/api/responses', { body, message_id, agent_id, agent_name: agentName }); // Use the agentName state variable
         setBody('');
+        setAgentName(''); // Clear the agent's name field
         window.alert(`Response added successfully! Server responded with status code: ${response.status}`);
       } catch (error) {
         console.error('Error sending response:', error);
@@ -27,6 +29,10 @@ function AgentResponseForm({ message_id, agent_id }) {
 
   return (
     <form onSubmit={handleSubmit}>
+      <label>
+        Agent Name:
+        <input type="text" value={agentName} onChange={(e) => setAgentName(e.target.value)} /> {/* Add an input field for the agent's name */}
+      </label>
       <label>
         Response:
         <textarea value={body} onChange={(e) => setBody(e.target.value)} />
