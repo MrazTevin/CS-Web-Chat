@@ -2,7 +2,7 @@ class Api::ResponsesController < ApplicationController
     skip_before_action :verify_authenticity_token
   
     def create
-        agent = Agent.find_or_create_by(id: response_params[:agent_id])
+        agent = Agent.find_or_create_by(name: response_params[:name])
         message = Message.find(response_params[:message_id])
 
         @response = Response.new(body: response_params[:body], agent: agent, message: message)
@@ -17,6 +17,6 @@ class Api::ResponsesController < ApplicationController
       private
     
       def response_params
-        params.require(:response).permit(:body, :message_id, :agent_id)
+        params.require(:response).permit(:body, :message_id, :agent_id, :name)
       end
 end
