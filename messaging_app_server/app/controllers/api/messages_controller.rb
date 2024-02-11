@@ -12,6 +12,8 @@ class Api::MessagesController < ApplicationController
 
     if message.save
       # Return the message along with additional information
+      ActionCable.server.broadcast('messages', message)
+
       render json: {
         id: message.id,
         user_id: message.user_id,
