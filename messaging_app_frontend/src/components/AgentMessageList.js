@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { ActionCable } from 'react-actioncable-provider';
 import '../../src/table.css'
 
 function AgentMessageList() {
@@ -16,10 +17,19 @@ function AgentMessageList() {
     };
     fetchMessages();
   }, []);
+  
+
+  const handleReceivedMessage = (message) => {
+    setMessages((prevMessages) => [message, ...prevMessages]);
+  };
 
   return (
     <div>
       <h2>Customer Messages</h2>
+      <ActionCable
+        channel={{ channel: 'MessagesChannel' }}
+        onReceived={handleReceivedMessage}
+      />
       <table>
         <thead>
           <tr>
