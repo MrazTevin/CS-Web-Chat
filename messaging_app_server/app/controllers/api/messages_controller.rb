@@ -4,9 +4,11 @@ class Api::MessagesController < ApplicationController
   def create
     # Strong parameters: Whitelist allowed parameters
     message_params = params.require(:message).permit(:user_id, :message_body)
-    
-    # Create and save the message
-    message = Message.new(message_params)
+
+    user = User.find_or_create_by(id: message_params[:user_id])
+
+    # create the message and associate it with the user
+    message = user.messages.new(message_body: message_params[:message_body])
 
     if message.save
       # Return the message along with additional information
