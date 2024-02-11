@@ -1,6 +1,5 @@
 class Api::MessagesController < ApplicationController
-    skip_before_action :verify_authenticity_token
-
+ 
     def create
         # Strong parameters: Whitelist allowed parameters
         message_params = params.permit(:user_id, :message_body)
