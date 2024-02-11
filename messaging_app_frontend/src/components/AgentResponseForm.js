@@ -9,11 +9,20 @@ function AgentResponseForm({ message_id, agent_id }) {
     event.preventDefault();
 
     try {
-      await axios.post('/api/responses', { body, message_id, agent_id });
-      setBody('');
-    } catch (error) {
-      console.error('Error sending response:', error);
-    }
+        const response = await axios.post('/api/responses', { body, message_id, agent_id });
+        setBody('');
+        window.alert(`Response added successfully! Server responded with status code: ${response.status}`);
+      } catch (error) {
+        console.error('Error sending response:', error);
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          window.alert(`An error occurred while adding the response. Server responded with status code: ${error.response.status}`);
+        } else if (error.request) {
+          window.alert('An error occurred while adding the response. No response was received from the server.');
+        } else {
+          window.alert('An error occurred while setting up the request.');
+        }
+      }
   };
 
   return (
