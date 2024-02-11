@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import '../../src/table.css'
 
 function AgentMessageList() {
   const [messages, setMessages] = useState([]);
@@ -19,18 +20,26 @@ function AgentMessageList() {
   return (
     <div>
       <h2>Customer Messages</h2>
-      <ul>
-        {messages.map((message) => (
-          <li key={message.id}>
-                        <p>ID: {message.id}</p>
-                        <p>From: {message.user_id}</p>
-            <p>{message.message_body}</p>
-            <p>At: {message.created_at}</p>
-            <hr />
-        
-          </li>
-        ))}
-      </ul>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>From</th>
+            <th>Message</th>
+            <th>At</th>
+          </tr>
+        </thead>
+        <tbody>
+          {messages.map((message) => (
+            <tr key={message.id}>
+              <td>{message.id}</td>
+              <td>{message.user_id}</td>
+              <td>{message.message_body}</td>
+              <td>{message.created_at}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
