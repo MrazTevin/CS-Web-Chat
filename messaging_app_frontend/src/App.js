@@ -3,13 +3,16 @@ import React from 'react';
 import './App.css';
 import CustomerMessageForm from './components/CustomerMessageForm';
 import AgentMessageList from './components/AgentMessageList';
+import CustomerForm from './components/CustomerForm';
 
 function App() {
   return (
     <div className="App">
       <h1>Messaging App</h1>
-      <CustomerMessageForm />
+      <CustomerForm />
+      {/* <CustomerMessageForm /> */}
       <AgentMessageList />
+      
     </div>
   );
 }
