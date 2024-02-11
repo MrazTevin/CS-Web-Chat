@@ -2,11 +2,14 @@ class Api::ResponsesController < ApplicationController
     skip_before_action :verify_authenticity_token
   
     def create
-        @response = Api::Response.new(response_params)
-    
+        agent = Agent.find_or_create_by(id: response_params[:agent_id])
+        message = Message.find(response_params[:message_id])
+
+        @response = Response.new(body: response_params[:body], agent: agent, message: message)
         if @response.save
           render json: @response, status: :created
         else
+            puts @response.errors.full_messages
           render json: @response.errors, status: :unprocessable_entity
         end
       end
