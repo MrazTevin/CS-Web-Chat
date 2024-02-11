@@ -10,5 +10,5 @@ Rails.application.routes.draw do
   get '/csrf-token', to: 'application#csrf'
 
   # Defines the root path route ("/")
-  # root "posts#index"
+  root "posts#index"
 end
