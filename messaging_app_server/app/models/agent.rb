@@ -1,4 +1,4 @@
 class Agent < ApplicationRecord
-    belongs_to :message
-    belongs_to :agent
+    has_many :responses
+    has_many :messages, through: :responses
 end
